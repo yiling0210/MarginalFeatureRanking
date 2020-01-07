@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578350261986.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "50|19|103|2|\n104|40|155|4|\n",
+    "hash" : "0",
+    "id" : "C7B84ACA",
+    "lastKnownWriteTime" : 1578354525,
+    "last_content_update" : 1578354525841,
+    "path" : "~/Dropbox/nproc/MarginalFeatureRanking/R/npc.R",
+    "project_path" : "R/npc.R",
+    "properties" : {
+        "cursorPosition" : "9,56",
+        "scrollLine" : "3",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
