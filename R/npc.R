@@ -10,7 +10,7 @@
 #' @param delta violation rate
 #' @param multi.core logical if use parallel computing. Default to FALSE
 #' @param ranseed random seed
-#' @return a list of p by 2 data frames whose first column contains classical criterion values and the second column contains rankings based on the classical criterion values. Each data frame corresponds to an alpha value in \code{alpha_s}. Rank = 1 has the lowest classical criterion value.
+#' @return a list of p by 2 data frames whose first column contains Neyman-Pearson criterion values and the second column contains rankings based on the Neyman-Pearson criterion values. Each data frame corresponds to an alpha value in \code{alpha_s}. Rank = 1 has the lowest Neyman-Pearson criterion value.
 #' @author Jingyi Jessica Li, Yiling Chen (\email{yiling0210@@ucla.edu}), Xin Tong
 #' @references \bold{FILL HERE}
 #' @examples
@@ -131,10 +131,7 @@ npc <- function(x, y, B, alpha_s, delta, multi.core=F,ranseed = 1001){
         s <- d1 / d0
         s0 <- s[1:n0_lo]
         s1 <- s[(n0_lo+1):n_lo]
-        # ## classical criterion
-        # t_cl <- n0_ts/n1_ts
-        # y_lo_hat <- as.numeric( s > t_cl )
-        # R_kde <- sum((y_lo - y_lo_hat) != 0) / n_lo
+
         ## NP criterion
         # classification scores on the left-out class 0 sample
         t <- s0

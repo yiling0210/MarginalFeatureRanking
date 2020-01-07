@@ -22,7 +22,7 @@ npc(x, y, B, alpha_s, delta, multi.core = F, ranseed = 1001)
 \item{ranseed}{random seed}
 }
 \value{
-a list of p by 2 data frames whose first column contains classical criterion values and the second column contains rankings based on the classical criterion values. Each data frame corresponds to an alpha value in \code{alpha_s}. Rank = 1 has the lowest classical criterion value.
+a list of p by 2 data frames whose first column contains Neyman-Pearson criterion values and the second column contains rankings based on the Neyman-Pearson criterion values. Each data frame corresponds to an alpha value in \code{alpha_s}. Rank = 1 has the lowest Neyman-Pearson criterion value.
 }
 \description{
 This function allows you to implement marginal feature ranking based on empirical type II error under the Neyman-Pearson criterion.
