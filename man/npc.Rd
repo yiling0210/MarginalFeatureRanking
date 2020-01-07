@@ -29,26 +29,29 @@ This function allows you to implement marginal feature ranking based on empirica
 }
 \examples{
 set.seed(1)
+library(mvtnorm)
 gen_data <- function(n, p, mu_0, mu_1, Sigma_0, Sigma_1) {
-d <- length(mu_0) # the dimension of X
+d <- length(mu_0)
 y <- sample(0:1, n, replace=TRUE, prob=c(1-p, p))
 x <- matrix(NA, nrow=n, ncol=d)
 x[y==0,] <- rmvnorm(n=sum(y==0), mean=mu_0, sigma=Sigma_0)
 x[y==1,] <- rmvnorm(n=sum(y==1), mean=mu_1, sigma=Sigma_1)
 return(list(x=x, y=y))
 }
-n <- 400 ## sample size
-B <- 11 ## number of random splits
-d <- 30 ## total number of features
-d_select <- 10 ## number of important features
+n <- 400
+B <- 11
+d <- 30
+d_select <- 10
 mu_0 <- c(rep(-1.5, d_select), rnorm(d-d_select))
 mu_1 <- c((d_select:1)*.1, mu_0[(d_select+1):d])
 Sigma_0 <- diag(rep(2^2, d))
 Sigma_1 <- Sigma_0
-data = gen_data(n, p, mu_0, mu_1, Sigma_0, Sigma_1)
-re = npc(data$x, data$y, B, alpha_s, delta, multi.core=F,ranseed = 1001)
+alpha_s <- c(0.05, 0.1, 0.2, 0.3)
+delta <- 0.05
+data <- gen_data(n, p, mu_0, mu_1, Sigma_0, Sigma_1)
+re <- npc(data$x, data$y, B, alpha_s, delta, multi.core=F,ranseed = 1001)
 re
-re
+
 }
 \references{
 \bold{FILL HERE}

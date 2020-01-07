@@ -1,6 +1,7 @@
 #' Neyman-Pearson criterion for marginal feature ranking
 #'
 #' This function allows you to implement marginal feature ranking based on empirical type II error under the Neyman-Pearson criterion.
+#' @export
 #' @name npc
 #' @param x n by p feature matrix
 #' @param y response vector of length n
@@ -14,28 +15,33 @@
 #' @references \bold{FILL HERE}
 #' @examples
 #' set.seed(1)
+#' library(mvtnorm)
 #' gen_data <- function(n, p, mu_0, mu_1, Sigma_0, Sigma_1) {
-#' d <- length(mu_0) # the dimension of X
+#' d <- length(mu_0)
 #' y <- sample(0:1, n, replace=TRUE, prob=c(1-p, p))
 #' x <- matrix(NA, nrow=n, ncol=d)
 #' x[y==0,] <- rmvnorm(n=sum(y==0), mean=mu_0, sigma=Sigma_0)
 #' x[y==1,] <- rmvnorm(n=sum(y==1), mean=mu_1, sigma=Sigma_1)
 #' return(list(x=x, y=y))
 #' }
-#' n <- 400 ## sample size
-#' B <- 11 ## number of random splits
-#' d <- 30 ## total number of features
-#' d_select <- 10 ## number of important features
+#' n <- 400
+#' B <- 11
+#' d <- 30
+#' d_select <- 10
 #' mu_0 <- c(rep(-1.5, d_select), rnorm(d-d_select))
 #' mu_1 <- c((d_select:1)*.1, mu_0[(d_select+1):d])
 #' Sigma_0 <- diag(rep(2^2, d))
 #' Sigma_1 <- Sigma_0
-#' data = gen_data(n, p, mu_0, mu_1, Sigma_0, Sigma_1)
-#' re = npc(data$x, data$y, B, alpha_s, delta, multi.core=F,ranseed = 1001)
+#' alpha_s <- c(0.05, 0.1, 0.2, 0.3)
+#' delta <- 0.05
+#' data <- gen_data(n, p, mu_0, mu_1, Sigma_0, Sigma_1)
+#' re <- npc(data$x, data$y, B, alpha_s, delta, multi.core=F,ranseed = 1001)
 #' re
+#'
+#' @importFrom parallel mclapply
+#' @importFrom ks kde
 
-#' re
-npc = function(x, y, B, alpha_s, delta, multi.core=F,ranseed = 1001){
+npc <- function(x, y, B, alpha_s, delta, multi.core=F,ranseed = 1001){
   set.seed(ranseed)
   p <- ncol(x)
   n <- nrow(x)
@@ -80,19 +86,11 @@ npc = function(x, y, B, alpha_s, delta, multi.core=F,ranseed = 1001){
         s <- d1 / d0
         s0 <- s[1:n0_lo]
         s1 <- s[(n0_lo+1):n_lo]
-        # ## classical criterion
-        # t_cl <- n0_ts/n1_ts
-        # y_lo_hat <- as.numeric( s > t_cl )
-        # R_kde <- sum((y_lo - y_lo_hat) != 0) / n_lo
-        ## NP criterion
-        # classification scores on the left-out class 0 sample
+
         t <- s0
         t <- sort(t)
-        # type II errors corresponding to varying alphas
         R1_kde_s <- sapply(alpha_s, FUN=function(alpha) {
-          # thresholds
           t_np <- t[np_order_stat(n0_lo, alpha, delta)]
-          # type II error
           sum(s1 <= t_np) / n1_lo
         })
 
